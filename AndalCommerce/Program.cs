@@ -7,6 +7,7 @@ namespace AndalCommerce
     {
 
         static List<string> orderHistory = new List<string>();
+
         static void Main(string[] args)
         {
 
@@ -20,7 +21,26 @@ namespace AndalCommerce
             string shippingName = GetShippingOption();
             string paymentName = GetPaymentOption();
 
+            Console.WriteLine("\n------ Order Summary ------");
+            Console.WriteLine("Name: " + name);
+            Console.WriteLine("Phone Number: " + phone);
+            Console.WriteLine("Address: " + fullAddress);
+            Console.WriteLine("Postal Code: " + postal);
+            Console.WriteLine("Shipping Method: " + shippingName);
+            Console.WriteLine("Payment Method: " + paymentName);
+            Console.WriteLine("\nOrder Successfully Created!");
 
+
+            string order = name + " | " + phone + " | " + fullAddress + " | " + postal + " | " + shippingName + " | " + paymentName;
+            orderHistory.Add(order);
+
+            Console.WriteLine("\nOrder History:");
+            foreach (string item in orderHistory)
+            {
+                Console.WriteLine(item);
+            }
+
+        }
 
             static string GetFullName()
             {
@@ -160,7 +180,6 @@ namespace AndalCommerce
             }
 
 
-
             static string GetShippingOption()
             {
 
@@ -252,28 +271,6 @@ namespace AndalCommerce
             }
 
 
-
-            Console.WriteLine("\n------ Order Summary ------");
-            Console.WriteLine("Name: " + name);
-            Console.WriteLine("Phone Number: " + phone);
-            Console.WriteLine("Address: " + fullAddress);
-            Console.WriteLine("Postal Code: " + postal);
-            Console.WriteLine("Shipping Method: " + shippingName);
-            Console.WriteLine("Payment Method: " + paymentName);
-            Console.WriteLine("\nOrder Successfully Created!");
-
-
-            string order = name + " | " + phone + " | " + fullAddress + " | " + postal + " | " + shippingName + " | " + paymentName + " | ";
-            orderHistory.Add(order);
-
-            Console.WriteLine("\nOrder History:");
-            foreach (string item in orderHistory)
-            {
-                Console.WriteLine(item);
-            }
-
-
-
-        }
+        
     }
 }
