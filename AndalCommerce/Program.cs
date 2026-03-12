@@ -10,37 +10,42 @@ namespace AndalCommerce
 
         static void Main(string[] args)
         {
+            while (true) {
+                Console.WriteLine("------ Address Selection ------");
+                string name = GetFullName();
+                string phone = GetPhone();
+                string fullAddress = GetFullAddress();
+                string postal = GetPostal();
 
-            Console.WriteLine("------ Address Selection ------");
-            string name = GetFullName();
-            string phone = GetPhone();
-            string fullAddress = GetFullAddress();
-            string postal = GetPostal();
+                Console.WriteLine("\n------ Shipping Options ------");
+                string shippingName = GetShippingOption();
+                string paymentName = GetPaymentOption();
 
-            Console.WriteLine("\n------ Shipping Options ------");
-            string shippingName = GetShippingOption();
-            string paymentName = GetPaymentOption();
+                Console.WriteLine("\n------ Order Summary ------");
+                Console.WriteLine("Name: " + name);
+                Console.WriteLine("Phone Number: " + phone);
+                Console.WriteLine("Address: " + fullAddress);
+                Console.WriteLine("Postal Code: " + postal);
+                Console.WriteLine("Shipping Method: " + shippingName);
+                Console.WriteLine("Payment Method: " + paymentName);
 
-            Console.WriteLine("\n------ Order Summary ------");
-            Console.WriteLine("Name: " + name);
-            Console.WriteLine("Phone Number: " + phone);
-            Console.WriteLine("Address: " + fullAddress);
-            Console.WriteLine("Postal Code: " + postal);
-            Console.WriteLine("Shipping Method: " + shippingName);
-            Console.WriteLine("Payment Method: " + paymentName);
-            Console.WriteLine("\nOrder Successfully Created!");
+                ConfirmAndSaveOrder(name, phone, fullAddress, postal, shippingName, paymentName);
 
+                Console.Write("\nDo you want to create another order? (Y/N): ");
+                string choice = Console.ReadLine();
 
-            string order = name + " | " + phone + " | " + fullAddress + " | " + postal + " | " + shippingName + " | " + paymentName;
-            orderHistory.Add(order);
+                if (choice.ToUpper() != "Y")
+                {
+                    break;
+                }
 
-            Console.WriteLine("\nOrder History:");
-            foreach (string item in orderHistory)
-            {
-                Console.WriteLine(item);
-            }
+                Console.WriteLine();
+                }
 
-        }
+                Console.WriteLine("\nThank you for using our E-Commerce App!");
+
+           }
+
 
             static string GetFullName()
             {
@@ -86,7 +91,7 @@ namespace AndalCommerce
 
                 while (true)
                 {
-                    Console.Write("Enter Phone Number: ");
+                    Console.Write("Enter Phone Number: +63");
                     phone = Console.ReadLine();
 
                     if (string.IsNullOrWhiteSpace(phone))
@@ -110,9 +115,9 @@ namespace AndalCommerce
                     {
                         Console.WriteLine("Phone number must contain digits only.");
                     }
-                    else if (phone.Length != 11)
+                    else if (phone.Length != 10)
                     {
-                        Console.WriteLine("Phone number must be exactly 11 digits.");
+                        Console.WriteLine("Phone number is incomplete.");
                     }
                     else
                     {
@@ -268,6 +273,51 @@ namespace AndalCommerce
 
                 return paymentName;
 
+            }
+
+
+            static void ConfirmAndSaveOrder(string name, string phone, string fullAddress, string postal, string shippingName, string paymentName)
+            {
+                while (true)
+                {
+                    Console.Write("\nConfirm Order? (Y/N): ");
+                    string confirm = Console.ReadLine().ToUpper();
+
+                    if (confirm == "Y")
+                    {
+                        Console.WriteLine("\nOrder Successfully Created!");
+
+                    string order = name + " | " + phone + " | " + fullAddress + " | " + postal + " | " + shippingName + " | " + paymentName;
+                    orderHistory.Add(order);
+
+                        Console.WriteLine("\n------ Order History ------");
+                        ShowOrderHistory();
+
+                        break;
+                    }
+                    else if (confirm == "N")
+                    {
+                        Console.WriteLine("\nOrder cancelled.");
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please enter Y or N only.");
+                    }
+                }
+            }
+
+
+            static void ShowOrderHistory()
+            {
+                int orderNumber = 1;
+
+                foreach (string item in orderHistory)
+                {
+                    Console.WriteLine("\nOrder #" + orderNumber);
+                    Console.WriteLine(item);
+                    orderNumber++;
+                }
             }
 
 
