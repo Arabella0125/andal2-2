@@ -1,29 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
+using AndalCommerceModels;
+using AndalCommerceAppService;
 
 namespace AndalCommerce
 {
     internal class Program
     {
-        static string name;
-        static string phone;
-        static string fullAddress;
-        static string postal;
-        static string shippingName;
-        static string paymentName;
-
-        static List<string> orderHistory = new List<string>();
+        static OrderAppService orderAppService = new OrderAppService();
+        static Order currentOrder = new Order();
 
         static void Main(string[] args)
         {
             while (true)
             {
-                
+                currentOrder = new Order();
+
                 GetFullName();
                 GetPhone();
                 GetFullAddress();
                 GetPostal();
-
                 GetShippingOption();
                 GetPaymentOption();
 
@@ -35,9 +30,8 @@ namespace AndalCommerce
                 string choice = Console.ReadLine();
 
                 if (choice.ToUpper() != "Y")
-                {
                     break;
-                }
+
                 Console.WriteLine();
             }
 
@@ -60,16 +54,21 @@ namespace AndalCommerce
 
                 bool hasNumber = false;
                 foreach (char c in input)
-                    if (char.IsDigit(c)) { 
-                        hasNumber = true; 
-                        break; 
+                {
+                    if (char.IsDigit(c))
+                    {
+                        hasNumber = true;
+                        break;
                     }
+                }
 
                 if (hasNumber)
+                {
                     Console.WriteLine("Name cannot contain numbers.");
+                }
                 else
                 {
-                    name = input;
+                    currentOrder.Name = input;
                     break;
                 }
             }
@@ -90,18 +89,25 @@ namespace AndalCommerce
 
                 bool hasLetter = false;
                 foreach (char c in input)
-                    if (!char.IsDigit(c)) { 
-                        hasLetter = true; 
-                        break; 
+                {
+                    if (!char.IsDigit(c))
+                    {
+                        hasLetter = true;
+                        break;
                     }
+                }
 
                 if (hasLetter)
+                {
                     Console.WriteLine("Phone number must contain digits only.");
+                }
                 else if (input.Length != 10)
-                    Console.WriteLine("Phone number is incomplete.");
+                {
+                    Console.WriteLine("Phone number must be exactly 10 digits.");
+                }
                 else
                 {
-                    phone = input;
+                    currentOrder.Phone = input;
                     break;
                 }
             }
@@ -113,11 +119,14 @@ namespace AndalCommerce
             {
                 Console.Write("Enter Full Address: ");
                 string input = Console.ReadLine();
+
                 if (string.IsNullOrWhiteSpace(input))
+                {
                     Console.WriteLine("Address cannot be empty.");
+                }
                 else
                 {
-                    fullAddress = input;
+                    currentOrder.Address = input;
                     break;
                 }
             }
@@ -138,16 +147,25 @@ namespace AndalCommerce
 
                 bool hasLetter = false;
                 foreach (char c in input)
-                    if (!char.IsDigit(c)) { 
-                        hasLetter = true; 
-                        break; 
+                {
+                    if (!char.IsDigit(c))
+                    {
+                        hasLetter = true;
+                        break;
                     }
+                }
 
                 if (hasLetter)
+                {
                     Console.WriteLine("Postal code must contain numbers only.");
+                }
+                else if (input.Length != 4)
+                {
+                    Console.WriteLine("Postal code must be exactly 4 digits.");
+                }
                 else
                 {
-                    postal = input;
+                    currentOrder.Postal = input;
                     break;
                 }
             }
@@ -166,26 +184,27 @@ namespace AndalCommerce
                 Console.Write("Select Shipping Option (1-5): ");
 
                 string input = Console.ReadLine();
+
                 switch (input)
                 {
                     case "1": 
-                        shippingName = "Standard Delivery (5-7 days)"; 
+                        currentOrder.ShippingMethod = "Standard Delivery (5-7 days)"; 
                         break;
 
                     case "2": 
-                        shippingName = "Express Delivery (1-3 days)"; 
+                        currentOrder.ShippingMethod = "Express Delivery (1-3 days)"; 
                         break;
 
                     case "3": 
-                        shippingName = "Economy Delivery (7-14 days)"; 
+                        currentOrder.ShippingMethod = "Economy Delivery (7-14 days)"; 
                         break;
 
                     case "4": 
-                        shippingName = "Same-Day Delivery"; 
+                        currentOrder.ShippingMethod = "Same-Day Delivery"; 
                         break;
 
                     case "5": 
-                        shippingName = "Store Pick-up (No shipping fee)"; 
+                        currentOrder.ShippingMethod = "Store Pick-up (No shipping fee)"; 
                         break;
 
                     default:
@@ -208,22 +227,23 @@ namespace AndalCommerce
                 Console.Write("Select Payment Option (1-4): ");
 
                 string input = Console.ReadLine();
+
                 switch (input)
                 {
                     case "1": 
-                        paymentName = "Cash on Delivery"; 
+                        currentOrder.PaymentMethod = "Cash on Delivery"; 
                         break;
 
                     case "2": 
-                        paymentName = "E-Wallet (Gcash, Maya, etc.)"; 
+                        currentOrder.PaymentMethod = "E-Wallet (Gcash, Maya, etc.)"; 
                         break;
 
                     case "3": 
-                        paymentName = "Payment Center"; 
+                        currentOrder.PaymentMethod = "Payment Center"; 
                         break;
 
                     case "4": 
-                        paymentName = "Online Banking (Debit/Credit)"; 
+                        currentOrder.PaymentMethod = "Online Banking (Debit/Credit)"; 
                         break;
 
                     default:
@@ -237,12 +257,12 @@ namespace AndalCommerce
         static void ShowOrderSummary()
         {
             Console.WriteLine("\n------ Order Summary ------");
-            Console.WriteLine("Name: " + name);
-            Console.WriteLine("Phone Number: " + phone);
-            Console.WriteLine("Address: " + fullAddress);
-            Console.WriteLine("Postal Code: " + postal);
-            Console.WriteLine("Shipping Method: " + shippingName);
-            Console.WriteLine("Payment Method: " + paymentName);
+            Console.WriteLine("Name: " + currentOrder.Name);
+            Console.WriteLine("Phone Number: +63" + currentOrder.Phone);
+            Console.WriteLine("Address: " + currentOrder.Address);
+            Console.WriteLine("Postal Code: " + currentOrder.Postal);
+            Console.WriteLine("Shipping Method: " + currentOrder.ShippingMethod);
+            Console.WriteLine("Payment Method: " + currentOrder.PaymentMethod);
         }
 
         static void ConfirmAndSaveOrder()
@@ -254,8 +274,7 @@ namespace AndalCommerce
 
                 if (confirm == "Y")
                 {
-                    string order = name + " | " + phone + " | " + fullAddress + " | " + postal + " | " + shippingName + " | " + paymentName;
-                    orderHistory.Add(order);
+                    orderAppService.CreateOrder(currentOrder);
 
                     Console.WriteLine("\nOrder Successfully Created!");
                     ShowOrderHistory();
@@ -275,11 +294,22 @@ namespace AndalCommerce
 
         static void ShowOrderHistory()
         {
+            var orders = orderAppService.GetOrderHistory();
+
             int orderNumber = 1;
-            Console.WriteLine("\n------ Order History ------");
-            foreach (string item in orderHistory)
+
+            Console.WriteLine("\n\n------ Order History ------");
+
+            foreach (var order in orders)
             {
-                Console.WriteLine("\nOrder #" + orderNumber + ": " + item);
+                Console.WriteLine("Order #" + orderNumber + ": " +
+                    order.Name + " | " +
+                    order.Phone + " | " +
+                    order.Address + " | " +
+                    order.Postal + " | " +
+                    order.ShippingMethod + " | " +
+                    order.PaymentMethod);
+
                 orderNumber++;
             }
         }
