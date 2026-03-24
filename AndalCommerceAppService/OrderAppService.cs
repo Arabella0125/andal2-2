@@ -7,7 +7,12 @@ namespace AndalCommerceAppService
 {
     public class OrderAppService
     {
-        OrderDataService dataService = new OrderDataService();
+        OrderDataService dataService = new OrderDataService(new OrderDBData());
+
+        public OrderAppService()
+        {
+            OrderDBData orderDBData = new OrderDBData();
+        }
 
         public void CreateOrder(Order order)
         {

@@ -5,16 +5,21 @@ namespace AndalCommerceDataService
 {
     public class OrderDataService
     {
-        List<Order> orderHistory = new List<Order>();
+        IOrderDataService orderdataService;
+
+        public OrderDataService(IOrderDataService dataService)
+        {
+            orderdataService = dataService;
+        }
 
         public void SaveOrder(Order order)
         {
-            orderHistory.Add(order);
+            orderdataService.SaveOrder(order);
         }
 
         public List<Order> GetOrders()
         {
-            return orderHistory;
+            return orderdataService.GetOrders();
         }
     }
 }

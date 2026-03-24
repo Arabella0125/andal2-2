@@ -78,7 +78,7 @@ namespace AndalCommerce
         {
             while (true)
             {
-                Console.Write("Enter Phone Number: +63");
+                Console.Write("Enter Phone Number: ");
                 string input = Console.ReadLine();
 
                 if (string.IsNullOrWhiteSpace(input))
@@ -101,9 +101,9 @@ namespace AndalCommerce
                 {
                     Console.WriteLine("Phone number must contain digits only.");
                 }
-                else if (input.Length != 10)
+                else if (input.Length != 11)
                 {
-                    Console.WriteLine("Phone number must be exactly 10 digits.");
+                    Console.WriteLine("Phone number must be exactly 11 digits.");
                 }
                 else
                 {
@@ -258,7 +258,7 @@ namespace AndalCommerce
         {
             Console.WriteLine("\n------ Order Summary ------");
             Console.WriteLine("Name: " + currentOrder.Name);
-            Console.WriteLine("Phone Number: +63" + currentOrder.Phone);
+            Console.WriteLine("Phone Number: " + currentOrder.Phone);
             Console.WriteLine("Address: " + currentOrder.Address);
             Console.WriteLine("Postal Code: " + currentOrder.Postal);
             Console.WriteLine("Shipping Method: " + currentOrder.ShippingMethod);
