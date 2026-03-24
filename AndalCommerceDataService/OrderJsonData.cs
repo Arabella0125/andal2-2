@@ -62,6 +62,28 @@ namespace AndalCommerceDataService
             SaveOrderData();
         }
 
+        public void UpdateOrder(Order order)
+        {
+            foreach (var o in orders)
+            {
+                if (o.Name == order.Name && o.Phone == order.Phone)
+                {
+                    o.Address = order.Address;
+                    o.Postal = order.Postal;
+                    o.ShippingMethod = order.ShippingMethod;
+                    o.PaymentMethod = order.PaymentMethod;
+                }
+            }
+
+            SaveOrderData(); 
+        }
+
+        public void DeleteOrder(string name, string phone)
+        {
+            orders.RemoveAll(o => o.Name == name && o.Phone == phone);
+            SaveOrderData(); 
+        }
+
         public List<Order> GetOrders()
         {
             LoadOrderData();

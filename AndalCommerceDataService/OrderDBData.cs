@@ -17,23 +17,40 @@ namespace AndalCommerceDataService
             sqlConnection = new SqlConnection(connectionString);
         }
 
-        // ✅ MUST MATCH INTERFACE NAME
         public void SaveOrder(Order order)
         {
-            string insertStatement = @"INSERT INTO Orders 
-            (Name, Phone, Address, Postal, ShippingMethod, PaymentMethod)
+            string insertStatement = @"INSERT INTO Orders (Name, Phone, Address, Postal, ShippingMethod, PaymentMethod) 
             VALUES (@Name, @Phone, @Address, @Postal, @ShippingMethod, @PaymentMethod)";
 
-            SqlCommand cmd = new SqlCommand(insertStatement, sqlConnection);
-            cmd.Parameters.AddWithValue("@Name", order.Name);
-            cmd.Parameters.AddWithValue("@Phone", order.Phone);
-            cmd.Parameters.AddWithValue("@Address", order.Address);
-            cmd.Parameters.AddWithValue("@Postal", order.Postal);
-            cmd.Parameters.AddWithValue("@ShippingMethod", order.ShippingMethod);
-            cmd.Parameters.AddWithValue("@PaymentMethod", order.PaymentMethod);
+            SqlCommand insertOrder = new SqlCommand(insertStatement, sqlConnection);
+            insertOrder.Parameters.AddWithValue("@Name", order.Name);
+            insertOrder.Parameters.AddWithValue("@Phone", order.Phone);
+            insertOrder.Parameters.AddWithValue("@Address", order.Address);
+            insertOrder.Parameters.AddWithValue("@Postal", order.Postal);
+            insertOrder.Parameters.AddWithValue("@ShippingMethod", order.ShippingMethod);
+            insertOrder.Parameters.AddWithValue("@PaymentMethod", order.PaymentMethod);
 
             sqlConnection.Open();
-            cmd.ExecuteNonQuery();
+            insertOrder.ExecuteNonQuery();
+            sqlConnection.Close();
+        }
+
+        public void UpdateOrder(Order order)
+        {
+            string updateStatement = @"UPDATE Orders SET Address=@Address, Postal=@Postal, ShippingMethod=@ShippingMethod, PaymentMethod=@PaymentMethod 
+            WHERE Name=@Name AND Phone=@Phone";
+
+            SqlCommand updateOrder = new SqlCommand(updateStatement, sqlConnection);
+
+            updateOrder.Parameters.AddWithValue("@Name", order.Name);
+            updateOrder.Parameters.AddWithValue("@Phone", order.Phone);
+            updateOrder.Parameters.AddWithValue("@Address", order.Address);
+            updateOrder.Parameters.AddWithValue("@Postal", order.Postal);
+            updateOrder.Parameters.AddWithValue("@ShippingMethod", order.ShippingMethod);
+            updateOrder.Parameters.AddWithValue("@PaymentMethod", order.PaymentMethod);
+
+            sqlConnection.Open();
+            updateOrder.ExecuteNonQuery();
             sqlConnection.Close();
         }
 
@@ -62,6 +79,20 @@ namespace AndalCommerceDataService
 
             sqlConnection.Close();
             return orders;
+        }
+
+        public void DeleteOrder(string name, string phone)
+        {
+            string deleteStatement = @"DELETE FROM Orders WHERE Name=@Name AND Phone=@Phone";
+
+            SqlCommand deleteOrder = new SqlCommand(deleteStatement, sqlConnection);
+
+            deleteOrder.Parameters.AddWithValue("@Name", name);
+            deleteOrder.Parameters.AddWithValue("@Phone", phone);
+
+            sqlConnection.Open();
+            deleteOrder.ExecuteNonQuery();
+            sqlConnection.Close();
         }
     }
 }

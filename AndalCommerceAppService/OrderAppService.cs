@@ -14,6 +14,11 @@ namespace AndalCommerceAppService
             OrderDBData orderDBData = new OrderDBData();
         }
 
+        public void UpdateOrder(Order order)
+        {
+            dataService.UpdateOrder(order);
+        }
+
         public void CreateOrder(Order order)
         {
             dataService.SaveOrder(order);
@@ -22,6 +27,11 @@ namespace AndalCommerceAppService
         public List<Order> GetOrderHistory()
         {
             return dataService.GetOrders();
+        }
+
+        public void DeleteOrder(string name, string phone)
+        {
+            dataService.DeleteOrder(name, phone);
         }
     }
 }
