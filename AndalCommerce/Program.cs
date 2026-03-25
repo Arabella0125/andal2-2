@@ -13,36 +13,106 @@ namespace AndalCommerce
         {
             while (true)
             {
-                currentOrder = new Order();
+                Console.WriteLine("\n------ E-Commerce Order App ------");
+                Console.WriteLine("1. Create Order");
+                Console.WriteLine("2. Update Order");
+                Console.WriteLine("3. Delete Order");
+                Console.WriteLine("4. View Orders");
+                Console.WriteLine("5. Exit");
+                Console.Write("Choose option: ");
 
-                GetFullName();
-                GetPhone();
-                GetFullAddress();
-                GetPostal();
-                GetShippingOption();
-                GetPaymentOption();
-
-                ShowOrderSummary();
-
-                ConfirmAndSaveOrder();
-
-                Console.Write("\nDo you want to create another order? (Y/N): ");
                 string choice = Console.ReadLine();
 
-                if (choice.ToUpper() != "Y")
-                    break;
+                switch (choice)
+                {
+                    case "1":
+                        CreateOrder();
+                        break;
+                    case "2":
+                        UpdateOrder();
+                        break;
+                    case "3":
+                        DeleteOrder();
+                        break;
+                    case "4":
+                        ShowOrderHistory();
+                        break;
+                    case "5":
+                        Console.WriteLine("\nThank you for using the app!");
+                        return;
+                    default:
+                        Console.WriteLine("Invalid choice.");
+                        break;
+                }
+            }
+        }
 
-                Console.WriteLine();
+        static void CreateOrder()
+        {
+            currentOrder = new Order();
+
+            GetFullName();
+            GetPhone();
+            GetFullAddress();
+            GetPostal();
+            GetShippingOption();
+            GetPaymentOption();
+
+            ShowOrderSummary();
+
+            ConfirmAndSaveOrder();
+
+        }
+
+        static void UpdateOrder()
+        {
+            Console.Write("\nEnter Name of order to update: ");
+            string name = Console.ReadLine();
+
+            Console.Write("Enter Phone of order: ");
+            string phone = Console.ReadLine();
+
+            var orders = orderAppService.GetOrderHistory();
+            var order = orders.Find(o => o.Name == name && o.Phone == phone);
+
+            if (order == null)
+            {
+                Console.WriteLine("\nOrder not found.");
+                return;
             }
 
-            Console.WriteLine("\nThank you for using our E-Commerce App!");
+            currentOrder = order;
+
+            Console.WriteLine("\n------ New Details ------");
+
+            GetFullAddress();
+            GetPostal();
+            GetShippingOption();
+            GetPaymentOption();
+
+            orderAppService.UpdateOrder(currentOrder);
+
+            Console.WriteLine("\nOrder updated successfully!");
+        }
+
+        static void DeleteOrder()
+        {
+            Console.Write("\nEnter Name of order to delete: ");
+            string name = Console.ReadLine();
+
+            Console.Write("Enter Phone of order: ");
+            string phone = Console.ReadLine();
+
+            orderAppService.DeleteOrder(name, phone);
+
+            Console.WriteLine("\nOrder deleted successfully!");
         }
 
         static void GetFullName()
         {
             while (true)
             {
-                Console.WriteLine("------ Address Selection ------");
+                Console.WriteLine("\n------ Address Selection ------");
                 Console.Write("Enter Full Name: ");
                 string input = Console.ReadLine();
 
@@ -298,7 +368,7 @@ namespace AndalCommerce
 
             int orderNumber = 1;
 
-            Console.WriteLine("\n\n------ Order History ------");
+            Console.WriteLine("\n------ Order History ------");
 
             foreach (var order in orders)
             {
