@@ -9,9 +9,10 @@ namespace AndalCommerceAppService
     {
         OrderDataService dataService = new OrderDataService(new OrderDBData());
 
-        public OrderAppService()
+        public void CreateOrder(Order order)
         {
-            OrderDBData orderDBData = new OrderDBData();
+            order.OrderId = Guid.NewGuid();
+            dataService.AddOrder(order);
         }
 
         public void UpdateOrder(Order order)
@@ -19,9 +20,9 @@ namespace AndalCommerceAppService
             dataService.UpdateOrder(order);
         }
 
-        public void CreateOrder(Order order)
+        public void DeleteOrder(Guid id)
         {
-            dataService.SaveOrder(order);
+            dataService.DeleteOrder(id);
         }
 
         public List<Order> GetOrderHistory()
@@ -29,9 +30,9 @@ namespace AndalCommerceAppService
             return dataService.GetOrders();
         }
 
-        public void DeleteOrder(string name, string phone)
+        public Order? GetOrder(Guid id)
         {
-            dataService.DeleteOrder(name, phone);
+            return dataService.GetById(id);
         }
     }
 }

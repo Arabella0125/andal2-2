@@ -17,9 +17,9 @@ namespace AndalCommerceDataService
             {
                 orders.Add(new Order
                 {
-                    Name = "Arabella",
+                    Name = "Arabella Andal",
                     Phone = "09569952725",
-                    Address = "Platero, Laguna",
+                    Address = "St. Francis 11, Platero Biñan, Laguna",
                     Postal = "4024",
                     ShippingMethod = "Standard Delivery (5-7 days)",
                     PaymentMethod = "Cash on Delivery"
@@ -56,7 +56,7 @@ namespace AndalCommerceDataService
             }
         }
 
-        public void SaveOrder(Order order)
+        public void AddOrder(Order order)
         {
             orders.Add(order);
             SaveOrderData();
@@ -64,30 +64,32 @@ namespace AndalCommerceDataService
 
         public void UpdateOrder(Order order)
         {
-            foreach (var o in orders)
+            for (int i = 0; i < orders.Count; i++)
             {
-                if (o.Name == order.Name && o.Phone == order.Phone)
+                if (orders[i].OrderId == order.OrderId)
                 {
-                    o.Address = order.Address;
-                    o.Postal = order.Postal;
-                    o.ShippingMethod = order.ShippingMethod;
-                    o.PaymentMethod = order.PaymentMethod;
+                    orders[i] = order; 
+                    break;
                 }
             }
-
-            SaveOrderData(); 
+            SaveOrderData();
         }
 
-        public void DeleteOrder(string name, string phone)
+        public void DeleteOrder(Guid id)
         {
-            orders.RemoveAll(o => o.Name == name && o.Phone == phone);
-            SaveOrderData(); 
+            orders.RemoveAll(o => o.OrderId == id);
+            SaveOrderData();
         }
 
         public List<Order> GetOrders()
         {
             LoadOrderData();
-            return orders;
+            return new List<Order>(orders);
+        }
+
+        public Order? GetById(Guid id)
+        {
+            return orders.Find(o => o.OrderId == id);
         }
     }
 }

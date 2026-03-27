@@ -66,25 +66,13 @@ namespace AndalCommerce
 
         static void UpdateOrder()
         {
-            Console.Write("\nEnter Name of order to update: ");
-            string name = Console.ReadLine();
-
-            Console.Write("Enter Phone of order: ");
-            string phone = Console.ReadLine();
-
-            var orders = orderAppService.GetOrderHistory();
-            var order = orders.Find(o => o.Name == name && o.Phone == phone);
-
-            if (order == null)
-            {
-                Console.WriteLine("\nOrder not found.");
-                return;
-            }
+            var order = SelectOrderByNumber();
+            if (order == null) return;
 
             currentOrder = order;
 
             Console.WriteLine("\n------ New Details ------");
-
+            GetFullName();
             GetFullAddress();
             GetPostal();
             GetShippingOption();
@@ -92,20 +80,42 @@ namespace AndalCommerce
 
             orderAppService.UpdateOrder(currentOrder);
 
-            Console.WriteLine("\nOrder updated successfully!");
+            Console.WriteLine("\nOrder Successfully Updated!");
         }
 
         static void DeleteOrder()
         {
-            Console.Write("\nEnter Name of order to delete: ");
-            string name = Console.ReadLine();
+            var order = SelectOrderByNumber();
+            if (order == null) return;
 
-            Console.Write("Enter Phone of order: ");
-            string phone = Console.ReadLine();
+            orderAppService.DeleteOrder(order.OrderId);
 
-            orderAppService.DeleteOrder(name, phone);
+            Console.WriteLine("\nOrder Successfully Deleted!");
+        }
 
-            Console.WriteLine("\nOrder deleted successfully!");
+        static Order? SelectOrderByNumber()
+        {
+            var orders = orderAppService.GetOrderHistory();
+
+            if (orders.Count == 0)
+            {
+                Console.WriteLine("\nNo orders available.");
+                return null;
+            }
+
+            int orderNumber;
+            while (true)
+            {
+                Console.Write("Enter Order Number (1-" + orders.Count + "): ");
+                string? input = Console.ReadLine();
+
+                if (int.TryParse(input, out orderNumber) && orderNumber >= 1 && orderNumber <= orders.Count)
+                    break;
+
+                Console.WriteLine("Invalid input. Please enter a number between 1 and " + orders.Count + ".");
+            }
+
+            return orders[orderNumber - 1];
         }
 
         static void GetFullName()
@@ -347,7 +357,6 @@ namespace AndalCommerce
                     orderAppService.CreateOrder(currentOrder);
 
                     Console.WriteLine("\nOrder Successfully Created!");
-                    ShowOrderHistory();
                     break;
                 }
                 else if (confirm == "N")
@@ -372,13 +381,15 @@ namespace AndalCommerce
 
             foreach (var order in orders)
             {
-                Console.WriteLine("Order #" + orderNumber + ": " +
-                    order.Name + " | " +
-                    order.Phone + " | " +
-                    order.Address + " | " +
-                    order.Postal + " | " +
-                    order.ShippingMethod + " | " +
-                    order.PaymentMethod);
+                Console.WriteLine("Order #" + orderNumber);
+                Console.WriteLine("Order ID: " + order.OrderId);
+                Console.WriteLine("Name: " + order.Name);
+                Console.WriteLine("Phone: " + order.Phone);
+                Console.WriteLine("Address: " + order.Address);
+                Console.WriteLine("Postal: " + order.Postal);
+                Console.WriteLine("Shipping: " + order.ShippingMethod);
+                Console.WriteLine("Payment: " + order.PaymentMethod);
+                Console.WriteLine("-----------------------------");
 
                 orderNumber++;
             }

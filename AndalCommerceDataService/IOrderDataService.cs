@@ -5,9 +5,11 @@ namespace AndalCommerceDataService
 {
     public interface IOrderDataService
     {
-        void SaveOrder(Order order);
-        void UpdateOrder(Order order);     
-        void DeleteOrder(string name, string phone);
+        void AddOrder(Order order);
+        Order? GetById(Guid id);
+        void UpdateOrder(Order order);
+        void DeleteOrder(Guid id);
         List<Order> GetOrders();
+
     }
 }

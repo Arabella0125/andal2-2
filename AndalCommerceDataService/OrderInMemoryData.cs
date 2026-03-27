@@ -7,33 +7,38 @@ namespace AndalCommerceDataService
     {
         List<Order> orderHistory = new List<Order>();
 
-        public void SaveOrder(Order order)
+        public void AddOrder(Order order)
         {
             orderHistory.Add(order);
         }
 
         public void UpdateOrder(Order order)
         {
-            foreach (var o in orderHistory)
+            var existing = orderHistory.FirstOrDefault(o => o.OrderId == order.OrderId);
+            if (existing != null)
             {
-                if (o.Name == order.Name && o.Phone == order.Phone)
-                {
-                    o.Address = order.Address;
-                    o.Postal = order.Postal;
-                    o.ShippingMethod = order.ShippingMethod;
-                    o.PaymentMethod = order.PaymentMethod;
-                }
+                existing.Name = order.Name;
+                existing.Phone = order.Phone;
+                existing.Address = order.Address;
+                existing.Postal = order.Postal;
+                existing.ShippingMethod = order.ShippingMethod;
+                existing.PaymentMethod = order.PaymentMethod;
             }
         }
 
-        public void DeleteOrder(string name, string phone)
+        public void DeleteOrder(Guid id)
         {
-            orderHistory.RemoveAll(o => o.Name == name && o.Phone == phone);
+            orderHistory.RemoveAll(o => o.OrderId == id);
         }
 
         public List<Order> GetOrders()
         {
-            return orderHistory;
+            return new List<Order>(orderHistory);
+        }
+
+        public Order? GetById(Guid id)
+        {
+            return orderHistory.Find(o => o.OrderId == id);
         }
     }
 }

@@ -12,9 +12,14 @@ namespace AndalCommerceDataService
             orderdataService = dataService;
         }
 
-        public void SaveOrder(Order order)
+        public void AddOrder(Order order)
         {
-            orderdataService.SaveOrder(order);
+            orderdataService.AddOrder(order);
+        }
+
+        public Order? GetById(Guid id)
+        {
+            return orderdataService.GetById(id);
         }
 
         public void UpdateOrder(Order order)
@@ -22,16 +27,14 @@ namespace AndalCommerceDataService
             orderdataService.UpdateOrder(order);
         }
 
-        public void DeleteOrder(string name, string phone)
+        public void DeleteOrder(Guid id)
         {
-            orderdataService.DeleteOrder(name, phone);
+            orderdataService.DeleteOrder(id);
         }
 
         public List<Order> GetOrders()
         {
             return orderdataService.GetOrders();
         }
-
-        
     }
 }
