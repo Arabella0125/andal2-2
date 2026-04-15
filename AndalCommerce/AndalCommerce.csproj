@@ -12,4 +12,8 @@
     <ProjectReference Include="..\AndalCommerceModels\AndalCommerceModels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\" />
+  </ItemGroup>
+
 </Project>

@@ -12,6 +12,7 @@ namespace AndalCommerceAppService
         public void CreateOrder(Order order)
         {
             order.OrderId = Guid.NewGuid();
+            order.OrderDate = DateTime.Now;
             dataService.AddOrder(order);
         }
 

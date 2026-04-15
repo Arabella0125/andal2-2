@@ -28,6 +28,7 @@ namespace AndalCommerceDataService
                 Order defaultOrder = new Order
                 {
                     OrderId = Guid.NewGuid(),
+                    OrderDate = DateTime.Now,
                     Name = "Arabella Andal",
                     Phone = "09569952725",
                     Address = "St. Francis 11, Platero Biñan, Laguna",
@@ -42,12 +43,13 @@ namespace AndalCommerceDataService
 
         public void AddOrder(Order order)
         {
-            string insertStatement = @"INSERT INTO Orders (OrderId, Name, Phone, Address, Postal, ShippingMethod, PaymentMethod)
-            VALUES (@OrderId, @Name, @Phone, @Address, @Postal, @ShippingMethod, @PaymentMethod)";
+            string insertStatement = @"INSERT INTO Orders (OrderId, OrderDate, Name, Phone, Address, Postal, ShippingMethod, PaymentMethod)
+            VALUES (@OrderId, @OrderDate, @Name, @Phone, @Address, @Postal, @ShippingMethod, @PaymentMethod)";
 
             SqlCommand insertOrder = new SqlCommand(insertStatement, sqlConnection);
 
             insertOrder.Parameters.AddWithValue("@OrderId", order.OrderId);
+            insertOrder.Parameters.AddWithValue("@OrderDate", order.OrderDate);
             insertOrder.Parameters.AddWithValue("@Name", order.Name);
             insertOrder.Parameters.AddWithValue("@Phone", order.Phone);
             insertOrder.Parameters.AddWithValue("@Address", order.Address);
@@ -95,7 +97,7 @@ namespace AndalCommerceDataService
 
         public List<Order> GetOrders()
         {
-            string selectStatement = "SELECT * FROM Orders";
+            string selectStatement = "SELECT * FROM Orders ORDER BY OrderDate ASC";
             SqlCommand getOrder = new SqlCommand(selectStatement, sqlConnection);
 
             sqlConnection.Open();
@@ -108,6 +110,7 @@ namespace AndalCommerceDataService
                 orders.Add(new Order
                 {
                     OrderId = Guid.Parse(reader["OrderId"].ToString()),
+                    OrderDate = Convert.ToDateTime(reader["OrderDate"]),
                     Name = reader["Name"].ToString(),
                     Phone = reader["Phone"].ToString(),
                     Address = reader["Address"].ToString(),
@@ -138,6 +141,7 @@ namespace AndalCommerceDataService
                 order = new Order
                 {
                     OrderId = Guid.Parse(reader["OrderId"].ToString()),
+                    OrderDate = Convert.ToDateTime(reader["OrderDate"]),
                     Name = reader["Name"].ToString(),
                     Phone = reader["Phone"].ToString(),
                     Address = reader["Address"].ToString(),

@@ -66,26 +66,59 @@ namespace AndalCommerce
 
         static void UpdateOrder()
         {
-            var order = SelectOrderByNumber();
+            var order = SelectOrderFromList();
             if (order == null) return;
 
             currentOrder = order;
 
-            Console.WriteLine("\n------ New Details ------");
-            GetFullName();
-            GetFullAddress();
-            GetPostal();
-            GetShippingOption();
-            GetPaymentOption();
+            while (true)
+            {
+                Console.WriteLine("\n------ Update Menu ------");
+                Console.WriteLine("1. Update Name");
+                Console.WriteLine("2. Update Phone");
+                Console.WriteLine("3. Update Address");
+                Console.WriteLine("4. Update Postal");
+                Console.WriteLine("5. Update Shipping");
+                Console.WriteLine("6. Update Payment");
+                Console.WriteLine("7. Save Changes");
+                Console.Write("Choose option: ");
 
-            orderAppService.UpdateOrder(currentOrder);
+                string choice = Console.ReadLine();
 
-            Console.WriteLine("\nOrder Successfully Updated!");
+                switch (choice)
+                {
+                    case "1":
+                        GetFullName();
+                        break;
+                    case "2":
+                        GetPhone();
+                        break;
+                    case "3":
+                        GetFullAddress();
+                        break;
+                    case "4":
+                        GetPostal();
+                        break;
+                    case "5":
+                        GetShippingOption();
+                        break;
+                    case "6":
+                        GetPaymentOption();
+                        break;
+                    case "7":
+                        orderAppService.UpdateOrder(currentOrder);
+                        Console.WriteLine("\nOrder Successfully Updated!");
+                        return;
+                    default:
+                        Console.WriteLine("Invalid choice.");
+                        break;
+                }
+            }
         }
 
         static void DeleteOrder()
         {
-            var order = SelectOrderByNumber();
+            var order = SelectOrderFromList();
             if (order == null) return;
 
             orderAppService.DeleteOrder(order.OrderId);
@@ -93,7 +126,7 @@ namespace AndalCommerce
             Console.WriteLine("\nOrder Successfully Deleted!");
         }
 
-        static Order? SelectOrderByNumber()
+        static Order? SelectOrderFromList()
         {
             var orders = orderAppService.GetOrderHistory();
 
@@ -103,19 +136,27 @@ namespace AndalCommerce
                 return null;
             }
 
-            int orderNumber;
-            while (true)
+            Console.WriteLine("\n------ Select Order ------");
+
+            for (int i = 0; i < orders.Count; i++)
             {
-                Console.Write("Enter Order Number (1-" + orders.Count + "): ");
-                string? input = Console.ReadLine();
-
-                if (int.TryParse(input, out orderNumber) && orderNumber >= 1 && orderNumber <= orders.Count)
-                    break;
-
-                Console.WriteLine("Invalid input. Please enter a number between 1 and " + orders.Count + ".");
+                Console.WriteLine((i + 1) + ". " + orders[i].Name + " - " + orders[i].Phone);
             }
 
-            return orders[orderNumber - 1];
+            int choice;
+
+            while (true)
+            {
+                Console.Write("Enter order number: ");
+                string? input = Console.ReadLine();
+
+                if (int.TryParse(input, out choice) && choice >= 1 && choice <= orders.Count)
+                    break;
+
+                Console.WriteLine("Invalid input. Try again.");
+            }
+
+            return orders[choice - 1];
         }
 
         static void GetFullName()
@@ -256,8 +297,8 @@ namespace AndalCommerce
             while (true)
             {
                 Console.WriteLine("\n------ Shipping Options ------");
-                Console.WriteLine("1. Standard Delivery (5-7 days)");
-                Console.WriteLine("2. Express Delivery (1-3 days)");
+                Console.WriteLine("1. Express Delivery (1-3 days)");
+                Console.WriteLine("2. Standard Delivery (5-7 days)");
                 Console.WriteLine("3. Economy Delivery (7-14 days)");
                 Console.WriteLine("4. Same-Day Delivery");
                 Console.WriteLine("5. Store Pick-up (No shipping fee)");
@@ -383,6 +424,7 @@ namespace AndalCommerce
             {
                 Console.WriteLine("Order #" + orderNumber);
                 Console.WriteLine("Order ID: " + order.OrderId);
+                Console.WriteLine("Order Date: " + order.OrderDate.ToString("MMMM dd, yyyy - hh:mm tt"));
                 Console.WriteLine("Name: " + order.Name);
                 Console.WriteLine("Phone: " + order.Phone);
                 Console.WriteLine("Address: " + order.Address);

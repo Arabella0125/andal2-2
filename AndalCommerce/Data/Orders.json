@@ -1,0 +1,52 @@
+[
+  {
+    "OrderId": "00000000-0000-0000-0000-000000000000",
+    "OrderDate": "0001-01-01T00:00:00",
+    "Name": "Arabella Andal",
+    "Phone": "09569952725",
+    "Address": "St. Francis 11, Platero Bi\u00F1an, Laguna",
+    "Postal": "4024",
+    "ShippingMethod": "Standard Delivery (5-7 days)",
+    "PaymentMethod": "Cash on Delivery"
+  },
+  {
+    "OrderId": "f9300563-1547-46d9-bdf1-956d3d86a124",
+    "OrderDate": "0001-01-01T00:00:00",
+    "Name": "Kevin Yue",
+    "Phone": "09657489512",
+    "Address": "Calamba, Laguna",
+    "Postal": "5432",
+    "ShippingMethod": "Store Pick-up (No shipping fee)",
+    "PaymentMethod": "Payment Center"
+  },
+  {
+    "OrderId": "3114fb3d-421e-4bc7-883b-11e2903ad687",
+    "OrderDate": "2026-04-13T19:27:45.4409529+08:00",
+    "Name": "Jose Mari Chan",
+    "Phone": "09236587496",
+    "Address": "Davao, City",
+    "Postal": "4598",
+    "ShippingMethod": "Standard Delivery (5-7 days)",
+    "PaymentMethod": "Cash on Delivery"
+  },
+  {
+    "OrderId": "bdc6d89b-9b97-4df2-98bd-bc484020f5d1",
+    "OrderDate": "2026-04-13T19:29:31.2909195+08:00",
+    "Name": "Carmella Cabalonga",
+    "Phone": "09873214968",
+    "Address": "Pandi, Bulacan",
+    "Postal": "1236",
+    "ShippingMethod": "Store Pick-up (No shipping fee)",
+    "PaymentMethod": "Cash on Delivery"
+  },
+  {
+    "OrderId": "5aa5f159-40f0-42d9-8600-5e23d98cd7df",
+    "OrderDate": "2026-04-13T19:30:55.0751137+08:00",
+    "Name": "Damon Salvatore",
+    "Phone": "09996321485",
+    "Address": "Metro Manila",
+    "Postal": "4596",
+    "ShippingMethod": "Same-Day Delivery",
+    "PaymentMethod": "Online Banking (Debit/Credit)"
+  }
+]
