@@ -18,7 +18,8 @@ namespace AndalCommerce
                 Console.WriteLine("2. Update Order");
                 Console.WriteLine("3. Delete Order");
                 Console.WriteLine("4. View Orders");
-                Console.WriteLine("5. Exit");
+                Console.WriteLine("5. Search Order");
+                Console.WriteLine("6. Exit");
                 Console.Write("Choose option: ");
 
                 string choice = Console.ReadLine();
@@ -38,6 +39,9 @@ namespace AndalCommerce
                         ShowOrderHistory();
                         break;
                     case "5":
+                        SearchOrder();
+                        break;
+                    case "6":
                         Console.WriteLine("\nThank you for using the app!");
                         return;
                     default:
@@ -434,6 +438,54 @@ namespace AndalCommerce
                 Console.WriteLine("-----------------------------");
 
                 orderNumber++;
+            }
+        }
+
+        static void SearchOrder()
+        {
+            Console.Write("\nEnter Name or Phone to Search: ");
+            string input = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                Console.WriteLine("Input cannot be empty.");
+                return;
+            }
+
+            input = input.ToLower();
+
+            var orders = orderAppService.GetOrderHistory();
+
+            var results = new List<Order>();
+
+            foreach (var order in orders)
+            {
+                if (order.Name.ToLower().Contains(input) ||
+                    order.Phone.Contains(input))
+                {
+                    results.Add(order);
+                }
+            }
+
+            if (results.Count == 0)
+            {
+                Console.WriteLine("\nNo matching orders found.");
+                return;
+            }
+
+            Console.WriteLine("\n------ Search Results ------");
+
+            foreach (var order in results)
+            {
+                Console.WriteLine("Order ID: " + order.OrderId);
+                Console.WriteLine("Order Date: " + order.OrderDate.ToString("MMMM dd, yyyy - hh:mm tt"));
+                Console.WriteLine("Name: " + order.Name);
+                Console.WriteLine("Phone: " + order.Phone);
+                Console.WriteLine("Address: " + order.Address);
+                Console.WriteLine("Postal: " + order.Postal);
+                Console.WriteLine("Shipping: " + order.ShippingMethod);
+                Console.WriteLine("Payment: " + order.PaymentMethod);
+                Console.WriteLine("-----------------------------");
             }
         }
     }
