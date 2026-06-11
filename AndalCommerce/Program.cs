@@ -85,6 +85,7 @@ namespace AndalCommerce
                 Console.WriteLine("5. Update Shipping");
                 Console.WriteLine("6. Update Payment");
                 Console.WriteLine("7. Save Changes");
+                Console.WriteLine("8. Exit");
                 Console.Write("Choose option: ");
 
                 string choice = Console.ReadLine();
@@ -112,7 +113,11 @@ namespace AndalCommerce
                     case "7":
                         orderAppService.UpdateOrder(currentOrder);
                         Console.WriteLine("\nOrder Successfully Updated!");
+                        break;
+                    case "8":
+                        Console.WriteLine("\nUpdate cancelled.");
                         return;
+                        
                     default:
                         Console.WriteLine("Invalid choice.");
                         break;
