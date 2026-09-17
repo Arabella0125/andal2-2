@@ -1,16 +1,28 @@
 ﻿using System;
 using AndalCommerceModels;
 using AndalCommerceAppService;
+using Microsoft.IdentityModel.Protocols.Configuration;
+using System.Runtime.InteropServices;
+using Microsoft.Extensions.Configuration;
 
 namespace AndalCommerce
 {
     internal class Program
     {
-        static OrderAppService orderAppService = new OrderAppService();
+        static OrderAppService orderAppService;
         static Order currentOrder = new Order();
 
         static void Main(string[] args)
         {
+            IConfiguration configuration = new ConfigurationBuilder()
+                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .AddJsonFile("Data/AppSettings.json", optional: false, reloadOnChange: true)
+                .Build();
+
+            EmailServices emailService = new EmailServices(configuration);
+            orderAppService = new OrderAppService(emailService);
+
+
             while (true)
             {
                 Console.WriteLine("\n------ E-Commerce Order App ------");
